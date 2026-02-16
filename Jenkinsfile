@@ -2,31 +2,40 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 echo 'Checking out code...'
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building project...'
+                echo 'Compiling Java program...'
+                bat 'javac Hello.java'
             }
         }
 
-        stage('Test') {
+        stage('Run') {
             steps {
-                echo 'Running tests...'
+                echo 'Running Java program...'
+                bat 'java Hello'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline succeeded!'
+            echo 'Pipeline completed successfully!'
         }
+
         failure {
             echo 'Pipeline failed!'
+        }
+
+        always {
+            echo 'This runs no matter what.'
         }
     }
 }
